@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recipe Search Results</title>
+</head>
+<body>
+    <h1>Recipe Search</h1>
+    <form method="get" action="{% url 'search_recipe' %}">
+        <input type="text" name="query" placeholder="Enter dish name" value="{{ query }}" required>
+        <button type="submit">Search</button>
+    </form>
+
+    <h2>Results</h2>
+    <ul>
+        {% for result in recipes %}
+            <li>
+                <strong>{{ result.recipe.label }}</strong> <br>
+                <img src="{{ result.recipe.image }}" alt="{{ result.recipe.label }}" width="100"><br>
+                <a href="{{ result.recipe.url }}">View Recipe</a>
+            </li>
+        {% empty %}
+            <li>No recipes found.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
