@@ -1,6 +1,7 @@
 import os
 import requests
 from django.shortcuts import render
+from django.conf import settings  # Make sure to import settings
 
 def search_recipe(request):
     query = request.GET.get('query')  # Get the dish name from the user input
@@ -28,3 +29,10 @@ def search_recipe(request):
         recipes = []
 
     return render(request, 'recipes/search_results.html', {'recipes': recipes, 'query': query})
+
+
+
+def map_view(request):
+    print("Map view called") 
+    return render(request, 'recipes/map.html', {'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY})
+

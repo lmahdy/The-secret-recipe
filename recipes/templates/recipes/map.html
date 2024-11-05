@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map Search</title>
+    <style>
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+        #search-bar {
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="search-bar">
+        <input id="searchInput" type="text" placeholder="Enter a place">
+        <button onclick="searchPlace()">Search</button>
+    </div>
+    <div id="map"></div>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places"></script>
+    <script>
+        let map, marker;
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 36.8065, lng: 10.1815 },  // Default to Tunis coordinates
+                zoom: 10
+            });
+            marker = new google.maps.Marker({
+                map: map,
+                draggable: true,
+            });
+        }
+
+        function searchPlace() {
+            const input = document.getElementById("searchInput").value;
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ 'address': input }, function(results, status) {
+                if (status === 'OK') {
+                    map.setCenter(results[0].geometry.location);
+                    marker.setPosition(results[0].geometry.location);
+                    map.setZoom(14);
+                } else {
+                    alert("Geocode was not successful for the following reason: " + status);
+                }
+            });
+        }
+
+        // Initialize the map when the window loads
+        window.onload = initMap;
+    </script>
+</body>
+</html>

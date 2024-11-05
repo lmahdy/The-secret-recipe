@@ -21,7 +21,11 @@
             </li>
         {% empty %}
             <li>No recipes found.</li>
+            
         {% endfor %}
     </ul>
+
+    <a href="{% url 'map_view' %}">Go to Map Search</a>
+
 </body>
 </html>
