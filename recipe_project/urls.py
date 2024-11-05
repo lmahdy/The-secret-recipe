@@ -18,6 +18,6 @@ Including another URLconf
 from django.urls import path, include
 
 urlpatterns = [
-    path('recipes/', include('recipes.urls')),
+    path('recipes/', include('recipes.urls')),# this means that all the urls that start with recipes/ will be handled by the recipes app
 ]
 

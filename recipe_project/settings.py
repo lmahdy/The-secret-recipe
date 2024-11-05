@@ -9,14 +9,14 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-import os
-from dotenv import load_dotenv
+import os #this means that we can access the environment variables in the .env file
+from dotenv import load_dotenv #this is used to load the environment variables from the .env file
 
-load_dotenv()
+load_dotenv() #this loads the environment variables from the .env file
 
-from pathlib import Path
+from pathlib import Path #this is used to work with file paths
 
-GOOGLE_MAPS_API_KEY = os.getenv('GOOGLE_MAPS_API_KEY')
+GOOGLE_MAPS_API_KEY = os.getenv('GOOGLE_MAPS_API_KEY') #this gets the Google Maps API key from the environment variables
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

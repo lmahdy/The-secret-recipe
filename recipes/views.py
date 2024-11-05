@@ -3,7 +3,7 @@ import requests
 from django.shortcuts import render
 from django.conf import settings  # Make sure to import settings
 
-def search_recipe(request):
+def search_recipe(request):#this function is called when the user searches for a recipe
     query = request.GET.get('query')  # Get the dish name from the user input
     app_id = os.getenv('RECIPE_APP_ID')
     app_key = os.getenv('RECIPE_APP_KEY')
@@ -32,7 +32,7 @@ def search_recipe(request):
 
 
 
-def map_view(request):
+def map_view(request):#this function is called when the user wants to view the map
     print("Map view called") 
-    return render(request, 'recipes/map.html', {'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY})
+    return render(request, 'recipes/map.html', {'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY})#this returns the map.html template with the Google Maps API key
 

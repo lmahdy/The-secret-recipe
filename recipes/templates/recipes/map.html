@@ -17,33 +17,33 @@
 <body>
     <div id="search-bar">
         <input id="searchInput" type="text" placeholder="Enter a place">
-        <button onclick="searchPlace()">Search</button>
+        <button onclick="searchPlace()">Search</button><!-- Add a button to trigger the searchPlace function -->
     </div>
     <div id="map"></div>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places"></script><!-- Load the Google Maps JavaScript API with the key -->
     <script>
         let map, marker;
 
         function initMap() {
-            map = new google.maps.Map(document.getElementById("map"), {
-                center: { lat: 36.8065, lng: 10.1815 },  // Default to Tunis coordinates
+            map = new google.maps.Map(document.getElementById("map"), {// this means that the map will be displayed in the div with the id "map"
+                center: { lat: 36.8065, lng: 10.1815 },  // Default to Tunis coordinates if the user's location is not available
                 zoom: 10
             });
-            marker = new google.maps.Marker({
+            marker = new google.maps.Marker({// the marker means the point that will be displayed on the map its gonna be draggable
                 map: map,
                 draggable: true,
             });
         }
 
-        function searchPlace() {
-            const input = document.getElementById("searchInput").value;
-            const geocoder = new google.maps.Geocoder();
-            geocoder.geocode({ 'address': input }, function(results, status) {
-                if (status === 'OK') {
-                    map.setCenter(results[0].geometry.location);
-                    marker.setPosition(results[0].geometry.location);
-                    map.setZoom(14);
+        function searchPlace() {// this function is used to search for a place on the map
+            const input = document.getElementById("searchInput").value;// get the value of the input field
+            const geocoder = new google.maps.Geocoder();// create a new Geocoder object
+            geocoder.geocode({ 'address': input }, function(results, status) {// use the geocode method to search for the place
+                if (status === 'OK') {// if the search is successful
+                    map.setCenter(results[0].geometry.location);// set the center of the map to the location of the place
+                    marker.setPosition(results[0].geometry.location);// set the position of the marker to the location of the place
+                    map.setZoom(14);// set the zoom level of the map
                 } else {
                     alert("Geocode was not successful for the following reason: " + status);
                 }
