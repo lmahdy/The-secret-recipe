@@ -2,6 +2,7 @@ import os
 import requests
 from django.shortcuts import render
 from django.conf import settings  # Make sure to import settings
+from django.core.files.storage import default_storage
 
 def search_recipe(request):#this function is called when the user searches for a recipe
     query = request.GET.get('query')  # Get the dish name from the user input
@@ -35,4 +36,33 @@ def search_recipe(request):#this function is called when the user searches for a
 def map_view(request):#this function is called when the user wants to view the map
     print("Map view called") 
     return render(request, 'recipes/map.html', {'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY})#this returns the map.html template with the Google Maps API key
+
+def summarize_audio(request):
+    summary = ""
+    if request.method == 'POST':
+        audio_file = request.FILES.get('audio_file')
+        if audio_file:
+            file_path = default_storage.save('uploads/' + audio_file.name, audio_file)
+            # Absolute path to the file for upload to Deepgram
+            full_path = os.path.join(settings.MEDIA_ROOT, file_path)
+            
+            # Prepare headers and data for the Deepgram API
+            headers = {
+                'Authorization': f'Token {settings.DEEPGRAM_API_KEY}',
+                'Content-Type': 'audio/wav'  # Change as per the file type
+            }
+
+            with open(full_path, 'rb') as f:
+                response = requests.post(
+                    'https://api.deepgram.com/v1/listen?summarize=v2',
+                    headers=headers,
+                    data=f
+                )
+                data = response.json()
+                summary = data.get('results', {}).get('summary', {}).get('short', "No summary available.")
+            
+            # Clean up the uploaded file if desired
+            default_storage.delete(file_path)
+
+    return render(request, 'recipes/summarize_audio.html', {'summary': summary})
 

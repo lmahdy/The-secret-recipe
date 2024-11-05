@@ -18,6 +18,10 @@ from pathlib import Path #this is used to work with file paths
 
 GOOGLE_MAPS_API_KEY = os.getenv('GOOGLE_MAPS_API_KEY') #this gets the Google Maps API key from the environment variables
 
+DEEPGRAM_API_KEY = '6e0db86ed447ae842b0a123aa4aa4921ce2a5d0c'
+
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 

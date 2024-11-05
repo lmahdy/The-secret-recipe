@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Summarizer</title>
+    <style>
+        /* General styling for summary container */
+        .summary-container {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        .summary-label {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        .summary-text {
+            font-size: 1em;
+            color: #555;
+            padding: 10px;
+            line-height: 1.6;
+            margin-top: 10px;
+        }
+
+        /* Styles for upload section */
+        .upload-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .upload-button {
+            padding: 10px 20px;
+            font-size: 1em;
+            font-weight: bold;
+            color: white;
+            background-color: #ff5722;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+        }
+
+        .upload-button:hover {
+            background-color: #e64a19;
+        }
+
+        /* Refresh button styling */
+        .refresh-button {
+            padding: 10px 20px;
+            font-size: 1em;
+            font-weight: bold;
+            color: #333;
+            background-color: #e0e0e0;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 20px;
+        }
+
+        .refresh-button:hover {
+            background-color: #bdbdbd;
+        }
+    </style>
+</head>
+<body>
+
+<h2 style="text-align:center;">Audio Summarization</h2>
+
+<!-- File upload form -->
+<div class="upload-container">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="audio_file">Upload an MP3 file:</label>
+        <input type="file" id="audio_file" name="audio_file" accept="audio/*">
+        <button type="submit" class="upload-button">Summarize Uploaded Audio</button>
+    </form>
+</div>
+
+<!-- Display the summarized text -->
+<div class="summary-container">
+    <label class="summary-label">Summary:</label>
+    <p id="summary-text" class="summary-text">{{ summary }}</p>
+</div>
+
+<!-- Refresh button to clear summary and form -->
+<div style="text-align: center;">
+    <button class="refresh-button" onclick="window.location.reload();">Clear & Start Over</button>
+</div>
+
+</body>
+</html>
