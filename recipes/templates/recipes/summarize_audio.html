@@ -82,17 +82,17 @@
 <!-- File upload form -->
 <div class="upload-container">
     <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <label for="audio_file">Upload an MP3 file:</label>
-        <input type="file" id="audio_file" name="audio_file" accept="audio/*">
-        <button type="submit" class="upload-button">Summarize Uploaded Audio</button>
+        {% csrf_token %}<!-- this means that the form is protected from Cross-Site Request Forgery attacks -->
+        <label for="audio_file">Upload an MP3 file:</label><!-- this label is associated with the file input field for in here means that the user can upload an audio file -->
+        <input type="file" id="audio_file" name="audio_file" accept="audio/*"><!-- this input field allows the user to select an audio file -->
+        <button type="submit" class="upload-button">Summarize Uploaded Audio</button><!-- this button will trigger the form submission -->
     </form>
 </div>
 
 <!-- Display the summarized text -->
 <div class="summary-container">
     <label class="summary-label">Summary:</label>
-    <p id="summary-text" class="summary-text">{{ summary }}</p>
+    <p id="summary-text" class="summary-text">{{ summary }}</p><!-- this is the place where the summary will be displayed -->
 </div>
 
 <!-- Refresh button to clear summary and form -->
