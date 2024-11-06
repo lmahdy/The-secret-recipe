@@ -1,0 +1,32 @@
+<!-- recipes/templates/recipes/index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+</head>
+<body>
+    <h1>Contact Us</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <div>
+            <label for="name">Full Name</label>
+            <input type="text" name="name" id="name" required>
+        </div>
+        <div>
+            <label for="email">Email Address</label>
+            <input type="email" name="email" id="email" required>
+        </div>
+        <div>
+            <label for="message">Message</label>
+            <textarea name="message" id="message" required></textarea>
+        </div>
+        <button type="submit">Send Message</button>
+    </form>
+    {% if message %}
+        <p>{{ message }}</p>  <!-- This will show the success message after form submission -->
+    {% endif %}
+</body>
+</html>

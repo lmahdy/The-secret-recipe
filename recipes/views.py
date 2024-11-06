@@ -3,6 +3,9 @@ import requests
 from django.shortcuts import render
 from django.conf import settings  # Make sure to import settings
 from django.core.files.storage import default_storage
+from django.http import HttpResponse
+from django.core.mail import send_mail
+
 
 def search_recipe(request):#this function is called when the user searches for a recipe
     query = request.GET.get('query')  # Get the dish name from the user input
@@ -65,4 +68,30 @@ def summarize_audio(request):
             default_storage.delete(file_path)
 
     return render(request, 'recipes/summarize_audio.html', {'summary': summary})
+
+
+
+def index(request):
+    if request.method == 'POST':
+        # Extract data from the form
+        name = request.POST['name']
+        email = request.POST['email']
+        message = request.POST['message']
+        
+        # Compose the email
+        subject = f"Message from {name}"  # Email subject
+        body = f"Message: {message}\n\nFrom: {name}\nEmail: {email}"  # Email body
+        
+        # Send the email
+        send_mail(
+            subject,          # Subject
+            body,             # Message body
+            settings.EMAIL_HOST_USER,  # From email (your email)
+            [email],          # To email (receiver's email)
+            fail_silently=False  # Whether to fail silently or raise an exception
+        )
+
+        return render(request, 'recipes/index.html', {'message': 'Your message has been sent!'})
+    
+    return render(request, 'recipes/index.html')
 

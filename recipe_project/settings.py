@@ -20,6 +20,9 @@ GOOGLE_MAPS_API_KEY = os.getenv('GOOGLE_MAPS_API_KEY') #this gets the Google Map
 
 DEEPGRAM_API_KEY = '6e0db86ed447ae842b0a123aa4aa4921ce2a5d0c'
 
+RESEND_API_KEY = "re_MjqXW8yy_EVTogRQN41N59bvQLJfaxw7q"
+
+
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -34,6 +37,17 @@ SECRET_KEY = "django-insecure-3ge6xyu=%-1j3cjj_5st6*by0676#-)!m46gtmsr&x#&up4qz#
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+# Email configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'mahdimzoughi4420@gmail.com'  # Replace with your email
+EMAIL_HOST_PASSWORD = 'ztnqoorghifthzpu'  # Replace with your email app password
+
+# Optional, define allowed hosts (use an empty list if you're working locally)
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 ALLOWED_HOSTS = []
 
