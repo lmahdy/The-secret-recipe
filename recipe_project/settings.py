@@ -23,6 +23,11 @@ DEEPGRAM_API_KEY = '6e0db86ed447ae842b0a123aa4aa4921ce2a5d0c'
 RESEND_API_KEY = "re_MjqXW8yy_EVTogRQN41N59bvQLJfaxw7q"
 
 
+SPOTIFY_CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
+SPOTIFY_CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
+SPOTIFY_REDIRECT_URI = os.getenv("SPOTIFY_REDIRECT_URI")
+
+
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.

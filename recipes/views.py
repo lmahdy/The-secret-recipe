@@ -1,10 +1,13 @@
 import os
 import requests
-from django.shortcuts import render
+import base64
+from django.shortcuts import redirect,render
 from django.conf import settings  # Make sure to import settings
 from django.core.files.storage import default_storage
 from django.http import HttpResponse
 from django.core.mail import send_mail
+from django.urls import reverse
+from django.http import JsonResponse
 
 
 def search_recipe(request):#this function is called when the user searches for a recipe
@@ -94,4 +97,61 @@ def index(request):
         return render(request, 'recipes/index.html', {'message': 'Your message has been sent!'})
     
     return render(request, 'recipes/index.html')
+
+
+
+
+def spotify_login(request):
+    scope = "user-top-read"
+    auth_url = (
+        "https://accounts.spotify.com/authorize?"
+        f"client_id={settings.SPOTIFY_CLIENT_ID}&response_type=code&redirect_uri={settings.SPOTIFY_REDIRECT_URI}&scope={scope}"
+    )
+    return redirect(auth_url)
+
+def spotify_callback(request):
+    code = request.GET.get('code')
+    auth_str = f"{settings.SPOTIFY_CLIENT_ID}:{settings.SPOTIFY_CLIENT_SECRET}"
+    auth_bytes = auth_str.encode("utf-8")
+    auth_b64 = base64.b64encode(auth_bytes).decode("utf-8")
+
+    token_url = "https://accounts.spotify.com/api/token"
+    headers = {"Authorization": f"Basic {auth_b64}"}
+    data = {
+        "grant_type": "authorization_code",
+        "code": code,
+        "redirect_uri": settings.SPOTIFY_REDIRECT_URI,
+    }
+
+    response = requests.post(token_url, headers=headers, data=data)
+    response_data = response.json()
+    access_token = response_data.get("access_token")
+
+    # Store access token in session for later use
+    request.session["access_token"] = access_token
+    return redirect(reverse('top_tracks'))
+
+def top_tracks(request):
+    access_token = request.session.get("access_token")
+    if not access_token:
+        return redirect('spotify_login')
+
+    # Fetch top tracks from Spotify API
+    headers = {"Authorization": f"Bearer {access_token}"}
+    response = requests.get("https://api.spotify.com/v1/me/top/tracks?limit=6", headers=headers)
+    tracks_data = response.json().get("items", [])
+
+    # Simplify data for display in the template
+    tracks = [
+        {
+            "name": track["name"],
+            "artist": ", ".join(artist["name"] for artist in track["artists"]),
+            "album": track["album"]["name"],
+            "image_url": track["album"]["images"][0]["url"] if track["album"]["images"] else None,
+        }
+        for track in tracks_data
+    ]
+
+    return render(request, 'recipes/top_tracks.html', {"tracks": tracks})
+
 
