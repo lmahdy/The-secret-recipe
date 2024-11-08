@@ -3,6 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <title>Recipe Search Results</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+        h1, h2 {
+            color: #ff5722;
+            text-align: center;
+            margin-bottom: 20px;
+            animation: fadeIn 2s ease-out;
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Form Styling */
+        form {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 1em;
+            border: 2px solid #ff5722;
+            border-radius: 4px 0 0 4px;
+            width: 250px;
+            background-color: #1e1e1e;
+            color: #f4f4f4;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 1em;
+            background-color: #ff5722;
+            color: #121212;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #ff784e;
+        }
+
+        /* Results Styling */
+        ul {
+            list-style: none;
+            padding: 0;
+            width: 100%;
+            max-width: 600px;
+        }
+        li {
+            background-color: #1e1e1e;
+            border: 2px solid #ff5722;
+            border-radius: 8px;
+            margin: 15px 0;
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        li:hover {
+            transform: scale(1.02);
+        }
+        img {
+            width: 100px;
+            height: auto;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        a {
+            color: #ff5722;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            color: #ff784e;
+        }
+
+        /* Navigation Links */
+        .navigation-links {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .navigation-links a {
+            display: inline-block;
+            margin: 5px 0;
+            color: #ff5722;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        .navigation-links a:hover {
+            color: #ff784e;
+        }
+    </style>
 </head>
 <body>
     <h1>Recipe Search</h1>
@@ -15,21 +123,19 @@
     <ul>
         {% for result in recipes %}
             <li>
-                <strong>{{ result.recipe.label }}</strong> <br>
-                <img src="{{ result.recipe.image }}" alt="{{ result.recipe.label }}" width="100"><br>
+                <strong>{{ result.recipe.label }}</strong><br>
+                <img src="{{ result.recipe.image }}" alt="{{ result.recipe.label }}"><br>
                 <a href="{{ result.recipe.url }}">View Recipe</a>
             </li>
         {% empty %}
             <li>No recipes found.</li>
-            
         {% endfor %}
     </ul>
 
-    <a href="{% url 'map_view' %}">Go to Map Search</a>
-    <br>
-    <a href="{% url 'summarize_audio' %}">Go to Audio Summarizer</a>
-    <br>
-    <a href="{% url 'top_tracks' %}">Go to Top Tracks</a>
-
+    <div class="navigation-links">
+        <a href="{% url 'map_view' %}">Go to Map Search</a><br>
+        <a href="{% url 'summarize_audio' %}">Go to Audio Summarizer</a><br>
+        <a href="{% url 'top_tracks' %}">Go to Top Tracks</a>
+    </div>
 </body>
 </html>

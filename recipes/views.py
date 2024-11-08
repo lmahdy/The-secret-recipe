@@ -101,17 +101,17 @@ def index(request):
 
 
 
-def spotify_login(request):
-    scope = "user-top-read"
+def spotify_login(request):#this function is called when the user wants to login to Spotify 
+    scope = "user-top-read"#this means that we are requesting access to the user's top tracks
     auth_url = (
         "https://accounts.spotify.com/authorize?"
         f"client_id={settings.SPOTIFY_CLIENT_ID}&response_type=code&redirect_uri={settings.SPOTIFY_REDIRECT_URI}&scope={scope}"
-    )
-    return redirect(auth_url)
+    )#this means that we are constructing the URL to redirect the user to the Spotify login page
+    return redirect(auth_url)#this means that we are redirecting the user to the Spotify login page
 
-def spotify_callback(request):
+def spotify_callback(request):#this function is called when the user has logged in to Spotify so that we can get the access token we need the access token to get the user's top tracks
     code = request.GET.get('code')
-    auth_str = f"{settings.SPOTIFY_CLIENT_ID}:{settings.SPOTIFY_CLIENT_SECRET}"
+    auth_str = f"{settings.SPOTIFY_CLIENT_ID}:{settings.SPOTIFY_CLIENT_SECRET}"#this means that we are constructing the authorization string by combining the client ID and client secret
     auth_bytes = auth_str.encode("utf-8")
     auth_b64 = base64.b64encode(auth_bytes).decode("utf-8")
 
@@ -123,13 +123,13 @@ def spotify_callback(request):
         "redirect_uri": settings.SPOTIFY_REDIRECT_URI,
     }
 
-    response = requests.post(token_url, headers=headers, data=data)
-    response_data = response.json()
-    access_token = response_data.get("access_token")
+    response = requests.post(token_url, headers=headers, data=data)#this means that we are sending a post request to the Spotify API to get the access token
+    response_data = response.json()#this means that we are converting the response to JSON format
+    access_token = response_data.get("access_token")#this means that we are getting the access token from the response
 
     # Store access token in session for later use
-    request.session["access_token"] = access_token
-    return redirect(reverse('top_tracks'))
+    request.session["access_token"] = access_token #this means that we are storing the access token in the session so that we can use it later
+    return redirect(reverse('top_tracks')) #this means that we are redirecting the user to the top_tracks view
 
 def top_tracks(request):
     access_token = request.session.get("access_token")
@@ -154,4 +154,7 @@ def top_tracks(request):
 
     return render(request, 'recipes/top_tracks.html', {"tracks": tracks})
 
+
+def home(request):
+    return render(request, 'recipes/home.html')  # This assumes home.html is inside templates/recipes
 

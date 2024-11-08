@@ -5,12 +5,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Top Tracks</title>
     <style>
-        body { font-family: Arial, sans-serif; }
-        .track { display: flex; align-items: center; margin: 20px 0; }
-        .track img { width: 64px; height: 64px; margin-right: 15px; }
-        .track-info { display: flex; flex-direction: column; }
-        .track-name { font-weight: bold; }
-        .track-artist, .track-album { color: #555; }
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #ff5722;
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-align: center;
+            animation: fadeIn 2s ease-out;
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Track Display Styles */
+        .track {
+            display: flex;
+            align-items: center;
+            background-color: #1e1e1e;
+            border: 2px solid #ff5722;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 20px 0;
+            width: 100%;
+            max-width: 600px;
+            transition: transform 0.3s ease;
+        }
+        .track:hover {
+            transform: scale(1.02);
+        }
+        .track img {
+            width: 64px;
+            height: 64px;
+            border-radius: 4px;
+            margin-right: 15px;
+        }
+        .track-info {
+            display: flex;
+            flex-direction: column;
+            color: #f4f4f4;
+        }
+        .track-name {
+            font-weight: bold;
+            color: #ff5722;
+        }
+        .track-artist, .track-album {
+            color: #aaa;
+        }
+
+        /* No Tracks Message */
+        p {
+            color: #ff5722;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>

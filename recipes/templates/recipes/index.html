@@ -6,27 +6,105 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            color: #ff5722;
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 20px;
+            animation: fadeIn 2s ease-out;
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Form Styles */
+        form {
+            background-color: #1e1e1e;
+            padding: 20px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        div {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            color: #ff5722;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ff5722;
+            border-radius: 4px;
+            background-color: #1e1e1e;
+            color: #f4f4f4;
+            resize: none;
+        }
+        button {
+            background-color: #ff5722;
+            color: #121212;
+            font-size: 1em;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            width: 100%;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #ff784e;
+        }
+        /* Success Message */
+        p {
+            text-align: center;
+            color: #4caf50;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Contact Us</h1>
-    <form method="POST">
-        {% csrf_token %}
-        <div>
-            <label for="name">Full Name</label>
-            <input type="text" name="name" id="name" required>
-        </div>
-        <div>
-            <label for="email">Email Address</label>
-            <input type="email" name="email" id="email" required>
-        </div>
-        <div>
-            <label for="message">Message</label>
-            <textarea name="message" id="message" required></textarea>
-        </div>
-        <button type="submit">Send Message</button>
-    </form>
-    {% if message %}
-        <p>{{ message }}</p>  <!-- This will show the success message after form submission -->
-    {% endif %}
+    <div>
+        <h1>Contact Us</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <div>
+                <label for="name">Full Name</label>
+                <input type="text" name="name" id="name" required>
+            </div>
+            <div>
+                <label for="email">Email Address</label>
+                <input type="email" name="email" id="email" required>
+            </div>
+            <div>
+                <label for="message">Message</label>
+                <textarea name="message" id="message" required></textarea>
+            </div>
+            <button type="submit">Send Message</button>
+        </form>
+        {% if message %}
+            <p>{{ message }}</p> <!-- This will show the success message after form submission -->
+        {% endif %}
+    </div>
 </body>
 </html>

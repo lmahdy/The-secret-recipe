@@ -5,52 +5,109 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Map Search</title>
     <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #f4f4f4;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Title Styling */
+        h1 {
+            color: #ff5722;
+            margin-bottom: 20px;
+            animation: fadeIn 2s ease-out;
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Map Styling */
         #map {
             height: 500px;
             width: 100%;
+            max-width: 800px;
+            border: 2px solid #ff5722;
+            border-radius: 8px;
+            margin-top: 10px;
         }
+
+        /* Search Bar Styling */
         #search-bar {
-            margin: 10px;
+            display: flex;
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 800px;
+        }
+        #searchInput {
+            flex: 1;
+            padding: 10px;
+            font-size: 1em;
+            border: 2px solid #ff5722;
+            border-radius: 4px 0 0 4px;
+            background-color: #1e1e1e;
+            color: #f4f4f4;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #ff5722;
+            color: #121212;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #ff784e;
         }
     </style>
 </head>
 <body>
+    <h1>Map Search</h1>
     <div id="search-bar">
         <input id="searchInput" type="text" placeholder="Enter a place">
-        <button onclick="searchPlace()">Search</button><!-- Add a button to trigger the searchPlace function -->
+        <button onclick="searchPlace()">Search</button>
     </div>
     <div id="map"></div>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places"></script><!-- Load the Google Maps JavaScript API with the key -->
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places"></script>
     <script>
         let map, marker;
 
         function initMap() {
-            map = new google.maps.Map(document.getElementById("map"), {// this means that the map will be displayed in the div with the id "map"
-                center: { lat: 36.8065, lng: 10.1815 },  // Default to Tunis coordinates if the user's location is not available
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 36.8065, lng: 10.1815 },
                 zoom: 10
             });
-            marker = new google.maps.Marker({// the marker means the point that will be displayed on the map its gonna be draggable
+            marker = new google.maps.Marker({
                 map: map,
                 draggable: true,
             });
         }
 
-        function searchPlace() {// this function is used to search for a place on the map
-            const input = document.getElementById("searchInput").value;// get the value of the input field
-            const geocoder = new google.maps.Geocoder();// create a new Geocoder object
-            geocoder.geocode({ 'address': input }, function(results, status) {// use the geocode method to search for the place
-                if (status === 'OK') {// if the search is successful
-                    map.setCenter(results[0].geometry.location);// set the center of the map to the location of the place
-                    marker.setPosition(results[0].geometry.location);// set the position of the marker to the location of the place
-                    map.setZoom(14);// set the zoom level of the map
+        function searchPlace() {
+            const input = document.getElementById("searchInput").value;
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ 'address': input }, function(results, status) {
+                if (status === 'OK') {
+                    map.setCenter(results[0].geometry.location);
+                    marker.setPosition(results[0].geometry.location);
+                    map.setZoom(14);
                 } else {
                     alert("Geocode was not successful for the following reason: " + status);
                 }
             });
         }
 
-        // Initialize the map when the window loads
         window.onload = initMap;
     </script>
 </body>
