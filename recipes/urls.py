@@ -9,5 +9,7 @@ urlpatterns = [
     path('spotify/login/', views.spotify_login, name='spotify_login'),
     path('spotify/callback/', views.spotify_callback, name='spotify_callback'),
     path('spotify/top-tracks/', views.top_tracks, name='top_tracks'),
+     path('word-lookup/', views.word_lookup, name='word_lookup'),  # Render the form page
+    path('word-lookup-data/', views.word_lookup_data, name='word_lookup_data'),  # AJAX endpoint for JSON data
 
 ]

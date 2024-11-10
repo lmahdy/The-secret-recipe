@@ -158,3 +158,37 @@ def top_tracks(request):
 def home(request):
     return render(request, 'recipes/home.html')  # This assumes home.html is inside templates/recipes
 
+
+
+
+def word_lookup(request):
+    # Render the HTML template on initial load
+    return render(request, 'recipes/word_lookup.html')
+
+def word_lookup_data(request):
+    word = request.GET.get("word", "happy")  # Get the word from the query parameter
+    url = f"https://wordsapiv1.p.rapidapi.com/words/{word}"
+
+    headers = {
+        "x-rapidapi-key": "c573fb5e3cmsh59841f0c83b940cp1fb0fcjsnf62bc5925c46",
+        "x-rapidapi-host": "wordsapiv1.p.rapidapi.com"
+    }
+
+    try:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+        data = response.json()
+    except requests.exceptions.RequestException as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
+    # Return relevant data as JSON
+    processed_data = {
+        "word": data.get("word"),
+        "definition": data.get("results", [{}])[0].get("definition", "N/A"),
+        "examples": data.get("results", [{}])[0].get("examples", []),
+        "synonyms": data.get("results", [{}])[0].get("synonyms", []),
+        "antonyms": data.get("results", [{}])[0].get("antonyms", []),
+    }
+    return JsonResponse(processed_data)
+
+

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Word Lookup</title>
+    <style>
+        /* General styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #ff5722;
+            margin-bottom: 20px;
+            text-align: center;
+            animation: fadeIn 2s ease-out;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Form styling */
+        #word-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 400px;
+            gap: 10px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #1e1e1e;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        label {
+            font-size: 1.1em;
+            color: #f4f4f4;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ff5722;
+            border-radius: 5px;
+            background-color: #1e1e1e;
+            color: #f4f4f4;
+            font-size: 1em;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            font-weight: bold;
+            color: #121212;
+            background-color: #ff5722;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #ff784e;
+        }
+
+        /* Results container */
+        .result-container {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #1e1e1e;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .result-section {
+            margin: 10px 0;
+            color: #ddd;
+        }
+
+        .result-section strong {
+            color: #ff5722;
+        }
+    </style>
+</head>
+<body>
+    <h1>Search for a Word</h1>
+
+    <!-- Search form -->
+    <form id="word-form" action="{% url 'word_lookup_data' %}" method="get">
+        <label for="word">Enter a word:</label>
+        <input type="text" id="word" name="word" placeholder="Enter a word" required>
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- Results container -->
+    <div id="results"></div>
+
+    <!-- JavaScript to handle AJAX search -->
+    <script>
+    document.getElementById('word-form').onsubmit = async function(e) {
+        e.preventDefault();
+        const word = document.getElementById('word').value;
+
+        // Clear input after search if desired
+        document.getElementById('word').value = '';
+
+        // Fetch data from the AJAX endpoint
+        const response = await fetch(`/recipes/word-lookup-data/?word=${word}`);
+        const data = await response.json();
+        
+        // Generate structured HTML for results
+        let resultsHtml = `<div class="result-container"><h2>Results for "${word}"</h2>`;
+        
+        resultsHtml += `
+            <div class="result-section"><strong>Definition:</strong> ${data.definition || "N/A"}</div>
+            <div class="result-section"><strong>Examples:</strong> ${data.examples.length ? data.examples.join(", ") : "N/A"}</div>
+            <div class="result-section"><strong>Synonyms:</strong> ${data.synonyms.length ? data.synonyms.join(", ") : "N/A"}</div>
+            <div class="result-section"><strong>Antonyms:</strong> ${data.antonyms.length ? data.antonyms.join(", ") : "N/A"}</div>
+        `;
+
+        resultsHtml += `</div>`;
+        
+        // Display results
+        document.getElementById('results').innerHTML = resultsHtml;
+    };
+    </script>
+</body>
+</html>
