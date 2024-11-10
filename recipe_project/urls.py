@@ -23,5 +23,6 @@ urlpatterns = [
      path('admin/', admin.site.urls),
     path('recipes/', include('recipes.urls')),# this means that all the urls that start with recipes/ will be handled by the recipes app
     path('', recipe_views.home, name='home'),# this is the home page
+    path('notes/', include('notes.urls')),  # Add this line to include notes URLs
 ]
 
