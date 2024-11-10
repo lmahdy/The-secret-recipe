@@ -1,4 +1,5 @@
 import os
+from decouple import config
 import requests
 import base64
 from django.shortcuts import redirect,render
@@ -169,8 +170,9 @@ def word_lookup_data(request):
     word = request.GET.get("word", "happy")  # Get the word from the query parameter
     url = f"https://wordsapiv1.p.rapidapi.com/words/{word}"
 
+    # Use the API key from the .env file
     headers = {
-        "x-rapidapi-key": "c573fb5e3cmsh59841f0c83b940cp1fb0fcjsnf62bc5925c46",
+        "x-rapidapi-key": config("RAPIDAPI_KEY"),  # Load API key from .env
         "x-rapidapi-host": "wordsapiv1.p.rapidapi.com"
     }
 
