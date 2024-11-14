@@ -10,6 +10,10 @@ from django.core.mail import send_mail
 from django.urls import reverse
 from django.http import JsonResponse
 
+from django.views.decorators.csrf import csrf_exempt
+from .gemini_api import get_chat_response
+import json
+
 
 def search_recipe(request):#this function is called when the user searches for a recipe
     query = request.GET.get('query')  # Get the dish name from the user input
@@ -192,5 +196,22 @@ def word_lookup_data(request):
         "antonyms": data.get("results", [{}])[0].get("antonyms", []),
     }
     return JsonResponse(processed_data)
+
+
+
+@csrf_exempt
+def chat_response(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        user_message = data.get("message", "")
+        if user_message:
+            response_text = get_chat_response(user_message)
+            return JsonResponse({"response": response_text})
+        else:
+            return JsonResponse({"error": "No message provided"}, status=400)
+    return JsonResponse({"error": "Invalid request method"}, status=405)
+
+def chat_page(request):
+    return render(request, "recipes/chat.html")
 
 

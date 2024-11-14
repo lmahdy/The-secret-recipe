@@ -1,0 +1,158 @@
+<!-- templates/recipes/chat.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with Elmayt</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #121212;
+            font-family: Arial, sans-serif;
+        }
+
+        #chat-container {
+            width: 400px;
+            background-color: #1f1f1f;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h2 {
+            color: #ff9d00;
+            text-align: center;
+            padding: 15px;
+            background-color: #1a1a1a;
+            border-bottom: 2px solid #ff9d00;
+        }
+
+        #messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            max-height: 400px;
+            scrollbar-width: thin;
+            scrollbar-color: #ff9d00 #1f1f1f;
+        }
+
+        /* Scrollbar styling for WebKit browsers */
+        #messages::-webkit-scrollbar {
+            width: 6px;
+        }
+        #messages::-webkit-scrollbar-thumb {
+            background-color: #ff9d00;
+            border-radius: 5px;
+        }
+
+        /* Chat bubbles */
+        .message {
+            padding: 10px 15px;
+            margin: 8px 0;
+            border-radius: 15px;
+            width: fit-content;
+            max-width: 70%;
+            transition: transform 0.2s ease-in-out;
+        }
+        .message.user {
+            background-color: #ff9d00;
+            color: white;
+            align-self: flex-end;
+            animation: slideInRight 0.3s ease;
+        }
+        .message.bot {
+            background-color: #333333;
+            color: white;
+            align-self: flex-start;
+            animation: slideInLeft 0.3s ease;
+        }
+
+        /* Input and button styling */
+        #userInput {
+            width: calc(100% - 50px);
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 15px;
+            background-color: #2e2e2e;
+            color: white;
+        }
+
+        #sendButton {
+            width: 50px;
+            margin: 10px;
+            padding: 10px;
+            background-color: #ff9d00;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        #sendButton:hover {
+            background-color: #e68700;
+        }
+
+        /* Slide-in animations */
+        @keyframes slideInRight {
+            from { transform: translateX(50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideInLeft {
+            from { transform: translateX(-50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div id="chat-container">
+        <h2>Chat with Elmayt</h2>
+        <div id="messages"></div>
+        <div style="display: flex; align-items: center;">
+            <input type="text" id="userInput" placeholder="Type your message..." autofocus>
+            <button id="sendButton" onclick="sendMessage()">➤</button>
+        </div>
+    </div>
+
+    <script>
+        async function sendMessage() {
+            const userInput = document.getElementById("userInput");
+            const userMessage = userInput.value.trim();
+            if (!userMessage) return;
+            userInput.value = "";
+            displayMessage(userMessage, "user");
+
+            const response = await fetch("{% url 'chat_response' %}", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: userMessage })
+            });
+            const data = await response.json();
+            displayMessage(data.response, "bot");
+        }
+
+        function displayMessage(text, sender) {
+            const messagesContainer = document.getElementById("messages");
+            const messageDiv = document.createElement("div");
+            messageDiv.className = `message ${sender}`;
+            messageDiv.textContent = text;
+            messagesContainer.appendChild(messageDiv);
+            messageDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

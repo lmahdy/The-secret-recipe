@@ -11,5 +11,7 @@ urlpatterns = [
     path('spotify/top-tracks/', views.top_tracks, name='top_tracks'),
      path('word-lookup/', views.word_lookup, name='word_lookup'),  # Render the form page
     path('word-lookup-data/', views.word_lookup_data, name='word_lookup_data'),  # AJAX endpoint for JSON data
+    path('chat_response/', views.chat_response, name='chat_response'),#this is the url that will be used to get the chat response
+    path('chat/', views.chat_page, name='chat_page'),#this is the url that will be used to display the chat page
 
 ]
